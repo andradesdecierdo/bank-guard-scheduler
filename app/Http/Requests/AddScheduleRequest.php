@@ -11,6 +11,13 @@ class AddScheduleRequest extends FormRequest
     const MIN_HOURS = 3.5;
     const MAX_HOURS = 12;
 
+    /**
+     * Set the error bag to determine where the request errors are coming from.
+     *
+     * @var string
+     */
+    protected $errorBag = 'add';
+
     public function authorize()
     {
         return true;
@@ -26,6 +33,7 @@ class AddScheduleRequest extends FormRequest
         return [
             'guard_id' => 'required|exists:guards,id',
             'date' => ['required', 'date', 'after:today',
+                // Check if the guard has already a schedule on the input date.
                 function ($attribute, $value, $fail) use ($guardId) {
                     $exists = Schedule::query()
                         ->whereGuardId($guardId)

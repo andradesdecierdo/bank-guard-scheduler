@@ -17,3 +17,4 @@ Route::get('/', function () {
 
 Route::get('/schedule', "ScheduleController@index")->name('manage');
 Route::post('/schedule', "ScheduleController@store")->name('add');
+Route::delete('/schedule', "ScheduleController@delete")->name('delete');

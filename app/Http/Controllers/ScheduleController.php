@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Guard;
 use App\Models\Schedule;
 use App\Http\Requests\AddScheduleRequest;
+use App\Http\Requests\DeleteScheduleRequest;
 
 class ScheduleController extends Controller
 {
@@ -35,7 +36,27 @@ class ScheduleController extends Controller
         ]);
         $schedule->save();
 
-        return redirect()->route('manage')->with('success', 'Schedule successfully added.');
+        return redirect()
+            ->route('manage')
+            ->with('save_success', 'Schedule successfully added.');
+    }
+
+    /**
+     * Delete a guard schedule.
+     *
+     * @param DeleteScheduleRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function delete(DeleteScheduleRequest $request)
+    {
+        Schedule::query()
+            ->whereGuardId($request->get('guard_id'))
+            ->where('date', $request->get('date'))
+            ->delete();
+
+        return redirect()
+            ->route('manage')
+            ->with('delete_success', 'Schedule successfully deleted.');
     }
 
 }
