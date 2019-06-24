@@ -11,7 +11,7 @@ This web application is a security guard scheduler for a 24/7 bank.
 ## Specifications
 
 - Guards cannot work longer than 12 hours in a day
-- Guards cannot work less than 3 hours in a day
+- Guards cannot work less than 3.5 hours in a day
 - Show the guard schedule for the next 3 days
 - Show an indicator of the days which there is no guard rostered throughout the 24 hours of that day
 
