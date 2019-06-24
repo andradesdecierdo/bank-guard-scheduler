@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/schedule', "ScheduleController@index")->name('manage');
+Route::post('/schedule', "ScheduleController@store")->name('add');
