@@ -6,9 +6,24 @@ use App\Models\Guard;
 use App\Models\Schedule;
 use App\Http\Requests\AddScheduleRequest;
 use App\Http\Requests\DeleteScheduleRequest;
+use App\Services\ScheduleService;
 
 class ScheduleController extends Controller
 {
+    protected $scheduleService;
+
+    /**
+     * Initialize the service used by the controller.
+     * The service accepts data to process and returns the needed data.
+     *
+     * ScheduleController constructor.
+     * @param ScheduleService $scheduleService
+     */
+    public function __construct(ScheduleService $scheduleService)
+    {
+        $this->scheduleService = $scheduleService;
+    }
+
     /**
      * Display the scheduler page.
      *
@@ -16,8 +31,33 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        $guards = Guard::all();
-        return view('schedule.index', ['guards' => $guards])->render();
+        $guards = Guard::query()
+            ->with(['schedules' => function ($query) {
+                $query->orderBy('date', 'ASC');
+            }])
+            ->get();
+        list(
+            $dates,
+            $totalTimeFrames,
+            $dailyTimeFrames,
+            $dateSecurityChecker) = $this->scheduleService->initializeScheduleTimeline(3, 30);
+        list(
+            $guardSchedules,
+            $dateSecurityChecker) = $this->scheduleService->getGuardScheduleTimeline(
+                $guards,
+                $dates,
+                $dailyTimeFrames,
+                $dateSecurityChecker
+            );
+
+        return view('schedule.index', [
+            'guards' => $guards,
+            'dates' => $dates,
+            'dailyTimeFrameCount' => count($dailyTimeFrames),
+            'totalTimeFrames' => $totalTimeFrames,
+            'guardSchedules' => $guardSchedules,
+            'dateSecurityChecker' => $dateSecurityChecker,
+        ])->render();
     }
 
     /**
