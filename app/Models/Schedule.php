@@ -13,7 +13,7 @@ class Schedule extends Model
         'end_time',
     ];
 
-    public function schedules()
+    public function securityGuard()
     {
         return $this->belongsTo(Guard::class);
     }
