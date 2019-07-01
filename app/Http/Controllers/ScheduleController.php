@@ -31,16 +31,20 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        $guards = Guard::query()
-            ->with(['schedules' => function ($query) {
-                $query->orderBy('date', 'ASC');
-            }])
-            ->get();
         list(
             $dates,
-            $totalTimeFrames,
             $dailyTimeFrames,
+            $totalTimeFrames,
             $dateSecurityChecker) = $this->scheduleService->initializeScheduleTimeline(3, 30);
+
+        $startDate = $dates[0];
+        $endDate = collect($dates)->last();
+        $guards = Guard::query()
+            ->with(['schedules' => function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('date', [$startDate, $endDate])->orderBy('date', 'ASC');
+            }])
+            ->get();
+
         list(
             $guardSchedules,
             $dateSecurityChecker) = $this->scheduleService->getGuardScheduleTimeline(

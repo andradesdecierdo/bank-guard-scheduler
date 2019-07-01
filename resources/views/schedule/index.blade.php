@@ -1,10 +1,12 @@
 @extends ('layout.main')
 @section ('content')
-    <div class="container">
+    <div class="col-sm-6">
         @include('schedule.add')
-        <br>
+    </div>
+    <div class="col-sm-6">
         @include('schedule.delete')
-        <br>
+    </div>
+    <div class="col-sm-12">
         @include('schedule.table')
     </div>
     <script type="text/javascript">

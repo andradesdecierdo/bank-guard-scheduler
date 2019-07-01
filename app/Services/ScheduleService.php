@@ -7,6 +7,33 @@ use Carbon\Carbon;
 class ScheduleService
 {
     /**
+     * Get the guard's time frames for the given schedule.
+     *
+     * @param $schedule
+     * @param $dailyTimeFrames
+     * @return array
+     */
+    public function getDailyGuardTimeFrames($schedule, $dailyTimeFrames)
+    {
+        $newTimeFrames = $dailyTimeFrames;
+        $startTime = Carbon::createFromFormat('H:i:s', $schedule->start_time);
+        $endTime = Carbon::createFromFormat('H:i:s', $schedule->end_time);
+
+        // Add a color to every time frame as indicator of the schedule duration.
+        foreach ($dailyTimeFrames as $frameKey => $timeFrame) {
+            $currentTime = Carbon::createFromFormat('H:i', $timeFrame);
+            // Check if the time frame is between the guard daily schedule.
+            if ($currentTime->between($startTime, $endTime, false) ||
+                $currentTime->eq($startTime)
+            ) {
+                $newTimeFrames[$frameKey] = true;
+            }
+        }
+
+        return $newTimeFrames;
+    }
+
+    /**
      * Construct guard schedules based on the given schedule timeline.
      * Plots the guard available schedule time frames for all the displayed dates.
      *
@@ -25,28 +52,14 @@ class ScheduleService
             $guardSchedules[$key]['schedules'] = [];
 
             foreach ($dates as $dateKey => $day) {
-                $schedule = $guard->schedules()->where('date', $day)->first();
+                $schedule = $guard->schedules->where('date', $day)->first();
+                $newTimeFrames = $dailyTimeFrames;
                 // Set the guard time frames display.
                 if ($schedule) {
                     $dateSecurityChecker[$dateKey] = true;
-                    $newTimeFrames = $dailyTimeFrames;
-                    $startTime = Carbon::createFromFormat('H:i:s', $schedule->start_time);
-                    $endTime = Carbon::createFromFormat('H:i:s', $schedule->end_time);
-
-                    // Add a color to every time frame as indicator of the schedule duration.
-                    foreach ($dailyTimeFrames as $frameKey => $timeFrame) {
-                        $currentTime = Carbon::createFromFormat('H:i', $timeFrame);
-                        // Check if the time frame is between the guard daily schedule.
-                        if ($currentTime->between($startTime, $endTime, false) ||
-                            $currentTime->eq($startTime)
-                        ) {
-                            $newTimeFrames[$frameKey] = true;
-                        }
-                    }
-                    $guardSchedules[$key]['schedules'] = array_merge($guardSchedules[$key]['schedules'], $newTimeFrames);
-                } else {
-                    $guardSchedules[$key]['schedules'] = array_merge($guardSchedules[$key]['schedules'], $dailyTimeFrames);
+                    $newTimeFrames = $this->getDailyGuardTimeFrames($schedule, $dailyTimeFrames);
                 }
+                $guardSchedules[$key]['schedules'] = array_merge($guardSchedules[$key]['schedules'], $newTimeFrames);
             }
         }
 
@@ -91,8 +104,8 @@ class ScheduleService
 
         return [
             $dates,
-            $totalTimeFrames,
             $dailyTimeFrames,
+            $totalTimeFrames,
             $dateSecurityChecker,
         ];
     }
