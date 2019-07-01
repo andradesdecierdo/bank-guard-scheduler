@@ -7,6 +7,9 @@ This web application is a security guard scheduler for a 24/7 bank.
 - Roster a security guard to the schedule
 - Remove a security guard roster from the schedule
 - View all the security guards' schedule in a tabular form
+- Add a security guard
+- Delete a security guard
+- Show individual guard schedules
 
 ## Specifications
 
@@ -19,7 +22,6 @@ This web application is a security guard scheduler for a 24/7 bank.
 
 - The user can only set a schedule in a 30-minute interval
 - When there is a validation error, the old data do not display
-- Cannot add or delete a guard
 
 ## Technologies
 
