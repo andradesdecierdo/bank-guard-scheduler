@@ -15,7 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/schedule', "ScheduleController@index")->name('manage');
-Route::post('/schedule', "ScheduleController@store")->name('add');
-Route::delete('/schedule', "ScheduleController@delete")->name('delete');
-Route::get('/schedule/{id}', "ScheduleController@show")->name('show');
+// Schedule
+Route::get('/schedule', "ScheduleController@index")->name('schedule-manage');
+Route::post('/schedule', "ScheduleController@store")->name('schedule-add');
+Route::delete('/schedule', "ScheduleController@delete")->name('schedule-delete');
+Route::get('/schedule/{id}', "ScheduleController@show")->name('schedule-show');
+// Guard
+Route::get('/guard', "GuardController@index")->name('guard-manage');
+Route::post('/guard', "GuardController@store")->name('guard-add');
+Route::delete('/guard', "GuardController@delete")->name('guard-delete');

@@ -81,7 +81,7 @@ class ScheduleController extends Controller
         $schedule->save();
 
         return redirect()
-            ->route('manage')
+            ->route('schedule-manage')
             ->with('save_success', 'Schedule successfully added.');
     }
 
@@ -99,7 +99,7 @@ class ScheduleController extends Controller
             ->delete();
 
         return redirect()
-            ->route('manage')
+            ->route('schedule-manage')
             ->with('delete_success', 'Schedule successfully deleted.');
     }
 

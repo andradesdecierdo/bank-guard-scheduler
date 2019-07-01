@@ -1,11 +1,11 @@
-<h1>Bank Security Guard Schedule</h1>
+<h1>Bank Security Guard Schedules</h1>
 <div style="overflow-x: scroll; min-height: 100px">
     <table class="table table-bordered">
         <thead class="thead-light">
             <tr>
                 <th></th>
                 @foreach ($dates as $key => $day)
-                    <th colspan={{ $dailyTimeFrameCount }} class="text-center">
+                    <th colspan="{{ $dailyTimeFrameCount }}" class="text-center align-top">
                         {{ $day }}
                         {{-- Display an alert text if there is no guard scheduled --}}
                         @if (!$dateSecurityChecker[$key])

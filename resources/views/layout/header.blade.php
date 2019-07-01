@@ -3,6 +3,7 @@
     <div class="collapse navbar-collapse">
         <div class="navbar-nav">
             <a class="nav-item nav-link" href=/schedule>Schedules</a>
+            <a class="nav-item nav-link" href=/guard>Guards</a>
         </div>
     </div>
 </nav>

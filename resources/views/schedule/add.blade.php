@@ -1,4 +1,4 @@
-<form method="POST" name="add">
+<form method="POST" name="schedule-add">
     {{ csrf_field() }}
     <h1>Roster Security Guard</h1>
     @if ($errors->add->any())

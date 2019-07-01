@@ -6,7 +6,7 @@
     <div class="col-sm-6">
         @include('schedule.delete')
     </div>
-    <div class="col-sm-12">
+    <div class="col-sm-12 mt-5">
         @include('schedule.table')
     </div>
     <script type="text/javascript">
