@@ -11,7 +11,7 @@
             </ul>
         </div>
     @endif
-    @if(session()->has('delete_success'))
+    @if (session()->has('delete_success'))
         <div class="alert alert-success">
             {{ session()->get('delete_success') }}
         </div>
@@ -28,7 +28,7 @@
         <strong>Date:</strong>
         <input name="date" class="date form-control" type="text">
     </div>
-    <div class="mt-2">
+    <div class="mt-3">
         <button type="submit" class="btn btn-danger col-md-3">Delete</button>
     </div>
 </form>

@@ -10,7 +10,7 @@
             </ul>
         </div>
     @endif
-    @if(session()->has('save_success'))
+    @if (session()->has('save_success'))
         <div class="alert alert-success">
             {{ session()->get('save_success') }}
         </div>
@@ -27,15 +27,17 @@
         <strong>Date:</strong>
         <input name="date" class="date form-control" type="text">
     </div>
-    <div style="position: relative">
-        <strong>Start Time:</strong>
-        <input name="start_time" class="timepicker form-control" type="text">
+    <div class="row">
+        <div style="position: relative" class="col">
+            <strong>Start Time:</strong>
+            <input name="start_time" class="timepicker form-control" type="text">
+        </div>
+        <div style="position: relative" class="col">
+            <strong>End Time:</strong>
+            <input name="end_time" class="timepicker form-control" type="text">
+        </div>
     </div>
-    <div style="position: relative">
-        <strong>End Time:</strong>
-        <input name="end_time" class="timepicker form-control" type="text">
-    </div>
-    <div class="mt-2">
+    <div class="mt-3">
         <button type="submit" class="btn btn-primary col-md-3">Submit</button>
     </div>
 </form>

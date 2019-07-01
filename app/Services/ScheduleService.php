@@ -47,6 +47,7 @@ class ScheduleService
     {
         $guardSchedules = [];
         foreach ($guards as $key => $guard) {
+            $guardSchedules[$key]['id'] = $guard->id;
             $guardSchedules[$key]['name'] = $guard->name;
             $guardSchedules[$key]['color_indicator'] = $guard->color_indicator;
             $guardSchedules[$key]['schedules'] = [];

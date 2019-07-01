@@ -103,4 +103,42 @@ class ScheduleController extends Controller
             ->with('delete_success', 'Schedule successfully deleted.');
     }
 
+    /**
+     * Show all the guard's schedules.
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
+     */
+    public function show($id)
+    {
+        list(
+            $dates,
+            $dailyTimeFrames) = $this->scheduleService->initializeScheduleTimeline(3, 30);
+
+        $guard = Guard::query()
+            ->whereId($id)
+            ->with(['schedules' => function ($query) {
+                $query->orderBy('date', 'ASC');
+            }])
+            ->firstOrFail();
+
+        $guardSchedules = [];
+        foreach ($guard->schedules as $schedule) {
+            $dailySchedule['day'] = $schedule->date;
+            $dailySchedule['schedules'] = $this->scheduleService->getDailyGuardTimeFrames(
+                $schedule,
+                $dailyTimeFrames
+            );
+            $guardSchedules[] = $dailySchedule;
+        }
+
+        return view('schedule.show', [
+            'guard' => $guard,
+            'dates' => $dates,
+            'dailyTimeFrames' => $dailyTimeFrames,
+            'guardSchedules' => $guardSchedules,
+        ])->render();
+    }
+
 }
