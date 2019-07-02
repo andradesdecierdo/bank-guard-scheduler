@@ -21,7 +21,6 @@ This web application is a security guard scheduler for a 24/7 bank.
 ## Software Limitations
 
 - The user can only set a schedule in a 30-minute interval
-- When there is a validation error, the old data do not display
 
 ## Technologies
 
