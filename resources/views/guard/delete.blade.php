@@ -1,4 +1,4 @@
-<form method="POST" name="guard-delete">
+<form method="POST" name="delete" action="{{ route('guard-delete') }}">
     @method('delete')
     {{ csrf_field() }}
     <h1>Delete Security Guard</h1>
@@ -19,7 +19,9 @@
     <strong>Guard:</strong>
     <select name="guard_id" class="form-control form-control-lg">
         @foreach ($guards as $guard)
-            <option value="{{ $guard['id'] }}">{{ $guard['name'] }}</option>
+            <option value="{{ $guard['id'] }}" {{ ($errors->delete->any() && old('guard_id') == $id) ? 'selected' : '' }}>
+                {{ $guard['name'] }}
+            </option>
         @endforeach
     </select>
     <div class="mt-3">

@@ -55,7 +55,7 @@ class ScheduleController extends Controller
             );
 
         return view('schedule.index', [
-            'guards' => $guards,
+            'guards' => $guards->pluck('name', 'id'),
             'dates' => $dates,
             'dailyTimeFrameCount' => count($dailyTimeFrames),
             'totalTimeFrames' => $totalTimeFrames,
@@ -134,7 +134,8 @@ class ScheduleController extends Controller
         }
 
         return view('schedule.show', [
-            'guard' => $guard,
+            'guardName' => $guard->name,
+            'colorIndicator' => $guard->color_indicator,
             'dates' => $dates,
             'dailyTimeFrames' => $dailyTimeFrames,
             'guardSchedules' => $guardSchedules,

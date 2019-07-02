@@ -13,6 +13,11 @@ class Schedule extends Model
         'end_time',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     public function securityGuard()
     {
         return $this->belongsTo(Guard::class);

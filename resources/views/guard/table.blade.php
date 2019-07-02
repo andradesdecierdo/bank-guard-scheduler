@@ -9,7 +9,9 @@
     <tbody>
         @foreach ($guards as $guard)
             <tr>
-                <td><a href="/schedule/{{$guard['id']}}">{{ $guard['name'] }}</a></td>
+                <td>
+                    <a href="{{ route('schedule-show', $guard['id']) }}">{{ $guard['name'] }}</a>
+                </td>
                 <td style="background-color: {{ $guard['color_indicator'] }}"></td>
             </tr>
         @endforeach

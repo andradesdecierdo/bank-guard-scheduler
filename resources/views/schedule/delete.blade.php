@@ -1,4 +1,4 @@
-<form method="POST" name="schedule-delete">
+<form method="POST" name="delete" action="{{ route('schedule-delete') }}">
     @method('delete')
     {{ csrf_field() }}
     <h1>Remove Security Guard Roster</h1>
@@ -19,14 +19,16 @@
     <div style="position: relative">
         <strong>Guard:</strong>
         <select name="guard_id" class="form-control form-control-lg">
-            @foreach ($guards as $guard)
-                <option value="{{ $guard['id'] }}">{{ $guard['name'] }}</option>
+            @foreach ($guards as $id => $name)
+                <option value="{{ $id }}" {{ ($errors->delete->any() && old('guard_id') == $id) ? 'selected' : '' }}>
+                    {{ $name }}
+                </option>
             @endforeach
         </select>
     </div>
     <div style="position: relative">
         <strong>Date:</strong>
-        <input name="date" class="date form-control" type="text">
+        <input name="date" value="{{ ($errors->delete->any()) ? old('date') : '' }}" class="date form-control" type="text">
     </div>
     <div class="mt-3">
         <button type="submit" class="btn btn-danger col-md-3">Delete</button>

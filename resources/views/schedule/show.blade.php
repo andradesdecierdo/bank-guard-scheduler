@@ -1,7 +1,7 @@
 @extends ('layout.main')
 @section ('content')
 <h1>Security Guard Schedules</h1>
-<h3>{{ $guard['name'] }}</h3>
+<h3>{{ $guardName }}</h3>
 @if (count($guardSchedules))
     <div class="" style="overflow-x: scroll; min-height: 100px">
         @foreach ($guardSchedules as $guardSchedule)
@@ -22,7 +22,7 @@
                     <tr>
                         @foreach ($guardSchedule['schedules'] as $schedule)
                             {{-- Color the time frame if it is between the guard schedule --}}
-                            <td @if ($schedule === true) style="background-color: {{ $guard['color_indicator'] }}; height: 35px" @endif>
+                            <td @if ($schedule === true) style="background-color: {{ $colorIndicator }}; height: 35px" @endif>
                             </td>
                         @endforeach
                     </tr>

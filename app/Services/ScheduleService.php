@@ -9,8 +9,8 @@ class ScheduleService
     /**
      * Get the guard's time frames for the given schedule.
      *
-     * @param $schedule
-     * @param $dailyTimeFrames
+     * @param $schedule         - schedule of a guard|Instance of App\Models\Schedule
+     * @param $dailyTimeFrames  - array of time frames in a day
      * @return array
      */
     public function getDailyGuardTimeFrames($schedule, $dailyTimeFrames)
@@ -37,10 +37,10 @@ class ScheduleService
      * Construct guard schedules based on the given schedule timeline.
      * Plots the guard available schedule time frames for all the displayed dates.
      *
-     * @param $guards
-     * @param $dates
-     * @param $dailyTimeFrames
-     * @param $dateSecurityChecker
+     * @param $guards               - collection of guards with their schedules
+     * @param $dates                - array of dates as filters in displaying the guard schedules
+     * @param $dailyTimeFrames      - array of time frames in a day
+     * @param $dateSecurityChecker  - array of boolean for checking the availability of security guards on each date in $dates
      * @return array
      */
     public function getGuardScheduleTimeline($guards, $dates, $dailyTimeFrames, $dateSecurityChecker)
@@ -74,8 +74,8 @@ class ScheduleService
      * Initialize schedule timeline to be displayed
      * based on the number of days and minutes interval.
      *
-     * @param $noOfDays
-     * @param $minutesInterval
+     * @param $noOfDays         - number of days for schedules to be displayed starting tomorrow
+     * @param $minutesInterval  - the number of minutes interval between time frames
      * @return array
      */
     public function initializeScheduleTimeline($noOfDays, $minutesInterval)

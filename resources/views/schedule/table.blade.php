@@ -25,7 +25,7 @@
             @foreach ($guardSchedules as $guardSchedule)
                 <tr>
                     <td style="white-space: nowrap">
-                        <a href="/schedule/{{$guardSchedule['id']}}">{{ $guardSchedule['name'] }}</a>
+                        <a href="{{ route('schedule-show', $guardSchedule['id']) }}">{{ $guardSchedule['name'] }}</a>
                     </td>
                     @foreach ($guardSchedule['schedules'] as $schedule)
                         {{-- Color the time frame if it is between the guard schedule --}}

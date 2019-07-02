@@ -11,6 +11,11 @@ class Guard extends Model
         'color_indicator',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     public function schedules()
     {
         return $this->hasMany(Schedule::class);
