@@ -22,6 +22,13 @@ This web application is a security guard scheduler for a 24/7 bank.
 
 - The user can only set a schedule in a 30-minute interval
 
+## Unit Tests
+- Uses HTTP tests for unit testing. The following are the pages with unit tests:
+  - Welcome page
+  - Guard Page
+  - Scheduler Page
+  - Individual Guard Schedule Page
+
 ## Technologies
 
 - PHP
