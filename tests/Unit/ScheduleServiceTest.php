@@ -10,7 +10,7 @@ use Carbon\Carbon;
 
 class ScheduleServiceTest extends TestCase
 {
-    const ARRAY_ASSERTION_ERROR = 'The two array are not equal';
+    const ARRAY_ASSERTION_ERROR = 'The two arrays are not equal';
     const NO_OF_DAYS_DISPLAY = 3;
     const MINUTES_INTERVAL = 30;
     const DATE_SECURITY_CHECKER = [
@@ -70,7 +70,7 @@ class ScheduleServiceTest extends TestCase
     ];
 
     /**
-     * Get the list of schedule dates to be displayed.
+     * Get the list of schedule dates to be displayed for the next ($noOfDays) days.
      *
      * @param int $noOfDays
      * @return array $dates
@@ -88,7 +88,7 @@ class ScheduleServiceTest extends TestCase
     }
 
     /**
-     * Set the total time frames based on a given schedule for 3 days.
+     * Set the total time frames based on a given schedule for (NO_OF_DAYS_DISPLAY) days.
      *
      * @param $schedule
      * @param $key
