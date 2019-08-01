@@ -2,12 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guard;
 use App\Http\Requests\AddGuardRequest;
 use App\Http\Requests\DeleteGuardRequest;
+use App\Repositories\Guard\GuardRepositoryInterface;
 
 class GuardController extends Controller
 {
+    protected $guardRepository;
+
+    /**
+     * Initialize the repository used by the controller.
+     * The repository handles database processes
+     *
+     * ScheduleController constructor.
+     * @param GuardRepositoryInterface $guardRepository
+     */
+    public function __construct(GuardRepositoryInterface $guardRepository)
+    {
+        $this->guardRepository = $guardRepository;
+    }
+
     /**
      * Display the guard management page.
      *
@@ -15,7 +29,7 @@ class GuardController extends Controller
      */
     public function index()
     {
-        $guards = Guard::all();
+        $guards = $this->guardRepository->all();
 
         return view('guard.index', [
             'guards' => $guards,
@@ -30,11 +44,10 @@ class GuardController extends Controller
      */
     public function store(AddGuardRequest $request)
     {
-        $schedule = new Guard([
+        $this->guardRepository->createGuard([
             'name' => $request->get('name'),
             'color_indicator' => $request->get('color_indicator'),
         ]);
-        $schedule->save();
 
         return redirect()
             ->route('guard-manage')
@@ -49,9 +62,8 @@ class GuardController extends Controller
      */
     public function delete(DeleteGuardRequest $request)
     {
-        $guard = Guard::find($request->get('guard_id'));
-        $guard->schedules()->delete();
-        $guard->delete();
+        $guardId = $request->get('guard_id');
+        $this->guardRepository->deleteGuardById($guardId);
 
         return redirect()
             ->route('guard-manage')

@@ -2,26 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guard;
-use App\Models\Schedule;
 use App\Http\Requests\AddScheduleRequest;
 use App\Http\Requests\DeleteScheduleRequest;
 use App\Services\ScheduleService;
+use App\Repositories\Schedule\ScheduleRepositoryInterface;
+use App\Repositories\Guard\GuardRepositoryInterface;
 
 class ScheduleController extends Controller
 {
     protected $scheduleService;
+    protected $scheduleRepository;
+    protected $guardRepository;
 
     /**
-     * Initialize the service used by the controller.
+     * Initialize the service and repositories used by the controller.
      * The service accepts data to process and returns the needed data.
+     * The repository handles database processes
      *
      * ScheduleController constructor.
      * @param ScheduleService $scheduleService
+     * @param ScheduleRepositoryInterface $scheduleRepository
+     * @param GuardRepositoryInterface $guardRepository
      */
-    public function __construct(ScheduleService $scheduleService)
-    {
+    public function __construct(
+        ScheduleService $scheduleService,
+        ScheduleRepositoryInterface $scheduleRepository,
+        GuardRepositoryInterface $guardRepository
+    ) {
         $this->scheduleService = $scheduleService;
+        $this->scheduleRepository = $scheduleRepository;
+        $this->guardRepository = $guardRepository;
     }
 
     /**
@@ -39,11 +49,10 @@ class ScheduleController extends Controller
 
         $startDate = $dates[0];
         $endDate = collect($dates)->last();
-        $guards = Guard::query()
-            ->with(['schedules' => function ($query) use ($startDate, $endDate) {
-                $query->whereBetween('date', [$startDate, $endDate])->orderBy('date', 'ASC');
-            }])
-            ->get();
+        $guards = $this->guardRepository->getGuardsWithScheduleRange(
+            $startDate,
+            $endDate
+        );
 
         list(
             $guardSchedules,
@@ -72,13 +81,12 @@ class ScheduleController extends Controller
      */
     public function store(AddScheduleRequest $request)
     {
-        $schedule = new Schedule([
+        $this->scheduleRepository->createSchedule([
             'guard_id' => $request->get('guard_id'),
             'date' => $request->get('date'),
             'start_time' => $request->get('start_time'),
             'end_time' => $request->get('end_time'),
         ]);
-        $schedule->save();
 
         return redirect()
             ->route('schedule-manage')
@@ -93,10 +101,10 @@ class ScheduleController extends Controller
      */
     public function delete(DeleteScheduleRequest $request)
     {
-        Schedule::query()
-            ->whereGuardId($request->get('guard_id'))
-            ->where('date', $request->get('date'))
-            ->delete();
+        $this->scheduleRepository->deleteScheduleByGuardAndDate(
+            $request->get('guard_id'),
+            $request->get('date')
+        );
 
         return redirect()
             ->route('schedule-manage')
@@ -116,12 +124,7 @@ class ScheduleController extends Controller
             $dates,
             $dailyTimeFrames) = $this->scheduleService->initializeScheduleTimeline(3, 30);
 
-        $guard = Guard::query()
-            ->whereId($id)
-            ->with(['schedules' => function ($query) {
-                $query->orderBy('date', 'ASC');
-            }])
-            ->firstOrFail();
+        $guard = $this->guardRepository->findGuardByIdWithSchedules($id);
 
         $guardSchedules = [];
         foreach ($guard->schedules as $schedule) {
