@@ -71,7 +71,7 @@ class GuardRepository implements GuardRepositoryInterface
      * Delete guard by id.
      *
      * @param int $id
-     * @return bool
+     * @return bool|integer 1 or 0
      * @throws GuardDeleteErrorException
      */
     public function deleteGuardById(int $id)

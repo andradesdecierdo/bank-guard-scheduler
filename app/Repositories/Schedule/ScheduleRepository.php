@@ -36,7 +36,7 @@ class ScheduleRepository implements ScheduleRepositoryInterface
      *
      * @param int $guardId
      * @param string $date
-     * @return bool
+     * @return bool|integer 1 or 0
      * @throws ScheduleDeleteErrorException
      */
     public function deleteScheduleByGuardAndDate(int $guardId, string $date)
